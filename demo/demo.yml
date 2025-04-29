@@ -42,6 +42,15 @@ views:
                         opacity: 0;
                       `;
                     }
+
+# ********* Light entity with simple ON/OFF *********              
+            # - entity: light.tz3210_r5afgmkl_ts0505b_light
+            #   element: lamp_shade_on
+            #   tap_action: homeassistant.toggle
+            #   state_action:
+            #     action: call-service
+            #     service: floorplan.class_set
+            #     service_data: '${entity.state === "on" ? "layer-visible" : "layer-hidden"}'                    
         full_height: true
         type: custom:floorplan-card
         view_layout:
