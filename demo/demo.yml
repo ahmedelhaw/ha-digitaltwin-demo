@@ -1,0 +1,48 @@
+title: Demo Floorplan
+views:
+  - type: panel
+    title: Demo
+    path: demo
+    panel: true
+    log_level: info
+    console_log_level: info
+    badges: []
+    cards:
+      - config:
+          console_log_level: error
+          defaults:
+            hover_action: hover-info
+            tap_action: none
+            hold_action: more-info
+          image: /local/floorplan/demo/demo.svg
+          stylesheet: /local/floorplan/demo/demo.css
+          rules:
+            - entity: light.tz3210_r5afgmkl_ts0505b_light
+              element: lamp_shade_path
+              tap_action: homeassistant.toggle
+            - entity: light.tz3210_r5afgmkl_ts0505b_light
+              state_action:
+                action: call-service
+                service: floorplan.style_set
+                service_data:
+                  element: lamp_shade_on
+                  style: |
+                    >
+                    if (entity.state === 'on') {
+                      const brightness = entity.attributes.brightness || 255;
+                      const [h, s] = entity.attributes.hs_color || [0, 100]; // Default hue and saturation
+                      const opacity = brightness / 255;
+                      return `
+                        opacity: ${opacity};
+                        mix-blend-mode: lighten;
+                        filter: hue-rotate(${h}deg);
+                      `;
+                    } else {
+                      return `
+                        opacity: 0;
+                      `;
+                    }
+        full_height: true
+        type: custom:floorplan-card
+        view_layout:
+          position: main

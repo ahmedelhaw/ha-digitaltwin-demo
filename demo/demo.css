@@ -1,0 +1,32 @@
+/* make areas layer and its children non clickable */
+#overlay *,
+#areas *{
+  pointer-events: none !important;
+  cursor: none !important;
+}
+
+#paths path {
+  pointer-events: all !important;
+  stroke-width: 3px !important;  /* Added !important to override floorplan styles */
+  stroke: rgba(188, 56, 198, 0.79) !important;  /* Added !important to override floorplan styles */
+  stroke-dasharray: 150;
+  stroke-dashoffset: 150;
+  animation: trace 4s linear infinite;
+}
+
+@keyframes trace {
+  0% {
+    stroke-dashoffset: 150;
+    stroke-opacity: 0;
+  }
+  20% {
+    stroke-opacity: 1;
+  }
+  80% {
+    stroke-opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: -150;
+    stroke-opacity: 0;
+  }
+}
