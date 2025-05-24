@@ -1,0 +1,159 @@
+type: panel
+path: network
+title: Network view
+cards:
+- type: horizontal-stack
+  cards:
+  - type: 'custom:floorplan-card'
+    card_mod:
+      style: >
+        ha-card {
+            margin: 0;
+            background: none;
+            box-shadow: none;
+            border: none;
+            max-width: 100%;
+            max-height: 100%;
+        }
+        svg {
+            width: auto !important;
+            height: 100vh !important;
+            max-width: 100vw !important;
+        }
+  
+    config:
+      console_log_level: error
+      defaults:
+        hover_action: hover-info
+        tap_action: false
+        hold_action: more-info
+      image: /local/floorplan/latest/network.svg
+      stylesheet: /local/floorplan/latest/network.css
+      rules:
+        #################################################
+        # NETWORK
+        ################################################# 
+        - entities:
+            - sensor.ip_homeassistant
+            - sensor.ip_desktop_brtoim0
+            - sensor.ip_beelink
+            - sensor.ip_ps5_6b4c63
+            - sensor.ip_hisense
+            - sensor.ip_tvreceiver
+            - sensor.ip_smarttvpro
+            - sensor.ip_hp959e35
+            - sensor.external_ip
+            - sensor.mesh_wan_ip
+          state_action:
+            action: call-service
+            service: floorplan.text_set
+            service_data: '${entity.state === "" ? "OFFLINE" : entity.state}' 
+        - elements:
+            - sensor.linksys17420_wan_status
+            - sensor.linksys17420_wan_status_2            
+          entity: sensor.linksys17420_wan_status 
+          tap_action:
+            action: call-service
+            service: homeassistant.toggle
+        - entity: sensor.openwrt_router_wan_status
+          tap_action:
+            action: call-service
+            service: homeassistant.toggle
+
+        - entity: sensor.linksys17420_upload_speed
+          state_action:
+            action: call-service
+            service: floorplan.text_set
+            service_data: ${Number(entity.state).toFixed(2)}
+        - entity: sensor.linksys17420_download_speed
+          state_action:
+            action: call-service
+            service: floorplan.text_set
+            service_data: ${Number(entity.state).toFixed(2)}
+#################################################
+  # Footer
+#################################################
+        - entity: switch.mesh_guest_wi_fi
+          tap_action:
+            - service: homeassistant.toggle
+          state_action:            
+            - service: floorplan.class_set
+              service_data: 
+                element: beacon_on
+                class: '${entity.state === "on" ? "layer-visible" : "layer-hidden"}'
+
+        - entity: switch.mesh_guest_wi_fi
+          state_action:            
+            action: call-service
+            service: floorplan.text_set
+            service_data: ${entity.state}
+
+        - entity: switch.mesh_parental_control
+          tap_action:
+            - service: homeassistant.toggle
+          state_action:            
+            - service: floorplan.class_set
+              service_data:
+                element: switch.mesh_parental_control_on
+                class: '${entity.state === "on" ? "layer-visible" : "layer-hidden"}'
+
+        - entity: sensor.mesh_parental_control_list
+          state_action:            
+            action: call-service
+            service: floorplan.text_set
+            service_data: ${entity.state}
+
+        - entity: sensor.mesh_online_devices
+          state_action:            
+            action: call-service
+            service: floorplan.text_set
+            service_data: 'online: ${entity.state}'
+        - entity: sensor.mesh_offline_devices
+          state_action:            
+            action: call-service
+            service: floorplan.text_set
+            service_data: 'offline: ${entity.state}'
+
+        - entity: sensor.linksys17420_uptime
+          state_action:            
+            action: call-service
+            service: floorplan.text_set
+            service_data: 'Linksys: ${Math.floor(entity.state/86400)}d ${Math.floor((entity.state%86400)/3600)}h'
+        
+        - entity: sensor.openwrt_router_uptime
+          state_action:            
+            action: call-service
+            service: floorplan.text_set
+            service_data: 'OpenWRT: ${Math.floor(entity.state/86400)}d ${Math.floor((entity.state%86400)/3600)}h'
+
+        - entity: event.mesh_events
+          state_action:            
+            action: call-service
+            service: floorplan.text_set
+            service_data: ${entity.attributes.name}\n${entity.attributes.manufacturer}
+
+        - entity: event.mesh_events
+          element: event.mesh_events_type
+          state_action:            
+            action: call-service
+            service: floorplan.text_set
+            service_data: |
+              ${entity.attributes.event_type} ${Math.round((Date.now() - new Date(entity.state).getTime()) / (1000 * 60 * 60))} hrs ago
+
+        - entity: sensor.mesh_speedtest_download_bandwidth
+          state_action:            
+            action: call-service
+            service: floorplan.text_set
+            service_data: '${Number(entity.state).toFixed(0)}'
+
+        - entity: sensor.mesh_speedtest_upload_bandwidth
+          state_action:            
+            action: call-service
+            service: floorplan.text_set
+            service_data: '${Number(entity.state).toFixed(0)}'
+
+        - entity: button.mesh_reboot_the_whole_mesh
+          hold_action:
+            - service: homeassistant.toggle
+              confirmation:
+                text: Are you sure you want to reboot the network?     

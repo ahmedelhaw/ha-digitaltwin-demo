@@ -1,0 +1,184 @@
+/* Layer Visibility */
+.layer-visible {
+  display: inline !important;
+}
+.layer-hidden {
+  display: none !important;
+}
+#svg {
+  width: 50%;
+  height: 50%;
+}
+
+/* make areas layer and its children non clickable */
+#overlays *,
+#areas * {
+  pointer-events: none !important;
+  cursor: none !important;
+}
+#paths path {
+  pointer-events: all !important;
+  stroke-width: 1px !important; /* Added !important to override floorplan styles */
+  stroke: rgb(
+    0,
+    0,
+    0
+  ) !important; /* Added !important to override floorplan styles */
+  stroke-dasharray: 150;
+  stroke-dashoffset: 150;
+  animation: trace 2s linear infinite;
+}
+#paths_wan path {
+  pointer-events: all !important;
+  stroke-width: 1px !important; /* Added !important to override floorplan styles */
+  transition: stroke-width 0.2s ease-in-out;
+}
+
+#hyperlinks a:hover {
+  opacity: 1;
+  background-color: transparent;
+  filter: brightness(200%) drop-shadow(0 0 5px #b6b600);
+}
+
+
+#footer text:hover {
+  opacity: 1;
+  background-color: transparent;
+  filter: brightness(200%) drop-shadow(0 0 5px #fff);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+#footer g:hover {
+  opacity: 1;
+  background-color: transparent;
+  filter: brightness(100%) drop-shadow(0 0 3px #fff);
+  text-shadow: 0 0 4px rgba(15, 0, 125, 0.8);
+}
+
+#reboot g:hover{
+    opacity: 1;
+    background-color: transparent;
+    filter: brightness(100%) drop-shadow(0 0 3px #fff);
+    animation: danger-pulse 1s ease-in-out infinite;
+}
+
+@keyframes danger-pulse {
+    0%, 100% {
+        filter: brightness(100%) drop-shadow(0 0 3px #fff);
+    }
+    50% {
+        filter: brightness(150%) drop-shadow(0 0 10px #ff0000);
+    }
+}
+
+[id^="fill"] {
+  opacity: 0.3;
+  animation: glare 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.5));
+}
+
+@keyframes glare {
+  0% {
+    filter: brightness(80%) drop-shadow(0 0 1px rgba(255, 255, 255, 0.2));
+  }
+  50% {
+    filter: brightness(120%) drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+  }
+  100% {
+    filter: brightness(80%) drop-shadow(0 0 1px rgba(255, 255, 255, 0.2));
+  }
+}
+
+
+#beacon_on {
+  animation: beacon-pulse 2s ease-in-out infinite;
+ }
+
+@keyframes beacon-pulse {
+  0% {
+    opacity: 0.2;
+   }
+  50% {
+    opacity: 1;
+   }
+  100% {
+    opacity: 0.2;
+   }
+}
+
+
+#elements path {
+  pointer-events: all !important;
+}
+
+@keyframes trace {
+  0% {
+    stroke-dashoffset: 150;
+    stroke-opacity: 0;
+  }
+  20% {
+    stroke-opacity: 1;
+  }
+  80% {
+    stroke-opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: -150;
+    stroke-opacity: 0;
+  }
+}
+
+#smb {
+  font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+  overflow: hidden;
+  position: relative;
+  fill: white !important;
+}
+
+#downloadarrow,
+#downloadvalue {
+  pointer-events: all !important;
+  animation: download-ripple 2s linear infinite;
+}
+
+#uploadarrow,
+#uploadvalue {
+  pointer-events: all !important;
+  animation: upload-ripple 2s linear infinite;
+}
+
+@keyframes download-ripple {
+  0% {
+    opacity: 0.5;
+  }
+  25% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes upload-ripple {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
